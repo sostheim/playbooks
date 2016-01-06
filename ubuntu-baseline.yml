@@ -1,0 +1,42 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Setup a New Ubuntu Server
+  hosts: kubecluster
+  sudo: false
+  tasks: 
+    - name: Install Emacs
+      sudo: true
+      apt: name=emacs24-nox update_cache=true cache_valid_time=3600
+
+    # Configure root's .bashrc
+    # this could all be done as a single complex string in one lineinfile, but why?
+    - name: Set Emacs editor preferences (root)
+      sudo: true
+      lineinfile: dest=~/.bashrc insertafter=EOF line="\n# Set emacs as prefered editor for shell env"
+
+    - name: Set bash built in preference (root)
+      sudo: true
+      lineinfile: dest=~/.bashrc line="set -o emacs"
+
+    - name: Set EDITOR env var (root)
+      sudo: true
+      lineinfile: dest=~/.bashrc line="export EDITOR=emacs"
+
+    - name: Set VISUAL env var (root)
+      sudo: true
+      lineinfile: dest=~/.bashrc line="export VISUAL=$EDITOR"
+
+    # Configure ubnut user's .bashrc 
+    - name: Set Emacs editor preferences (ubuntu)
+      lineinfile: dest=~/.bashrc line="\n# Set emacs as prefered editor for shell env"
+
+    - name: Set bash built in preference (ubuntu)
+      lineinfile: dest=~/.bashrc line="set -o emacs"
+
+    - name: Set EDITOR env var (ubuntu)
+      lineinfile: dest=~/.bashrc line="export EDITOR=emacs"
+
+    - name: Set VISUAL env var (ubuntu)
+      lineinfile: dest=~/.bashrc line="export VISUAL=$EDITOR"
+
+ 

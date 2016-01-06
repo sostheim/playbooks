@@ -1,0 +1,23 @@
+#!/usr/bin/env ansible-playbook
+# Reference: http://kubernetes.io/v1.1/docs/getting-started-guides/docker-multinode.html
+---
+- name: Exec Kubernetes worker.sh script 
+  hosts: kubecluster
+  sudo: true
+  vars:
+    master_ip: 192.168.1.5 
+  tasks: 
+    - name: insert environment variable in root .bashrc
+      lineinfile: dest=/root/.bashrc state=present insertafter=EOF line="export MASTER_IP={{ master_ip }}"
+
+    - name: exec the script
+      shell: ./worker.sh >> worker_sh.out
+      args:
+        chdir: /home/ubuntu/code/github/kubernetes/kubernetes/docs/getting-started-guides/docker-multinode/
+      environment: 
+        MASTER_IP: "{{ master_ip }}"
+
+# remove debugging - hopefully not needed ;)
+#      register: result
+#    - debug: var=result
+ 

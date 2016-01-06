@@ -1,0 +1,12 @@
+#!/usr/bin/env ansible-playbook
+# Note: must be run with --ask-become-pass since sudo still reuqires password
+---	
+- name: Setup password-less sudo for 'ubuntu' user on Ubuntu Server 
+  hosts: kubecluster
+  sudo: true
+  tasks: 
+    - name: insert sudoer's permissions for ubuntu user
+      lineinfile: dest=/etc/sudoers state=present insertafter=EOF line="ubuntu    ALL=(ALL) NOPASSWD:ALL" validate="visudo -cf %s"
+
+    - name: insert sudoer's comment
+      lineinfile: dest=/etc/sudoers state=present insertbefore='^ubuntu' line="\n# User ubuntu privilege specification"

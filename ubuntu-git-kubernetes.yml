@@ -1,0 +1,14 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Download Kubernets repo from github.com
+  hosts: kubecluster
+  sudo: false
+  tasks: 
+    - name: create prefered directory structure for git repositories
+      file: path=~/code/github/kubernetes state=directory
+
+    - name: git clone kubernetes
+      git: repo=https://github.com/kubernetes/kubernetes.git dest=~/code/github/kubernetes/kubernetes
+
+
+ 
