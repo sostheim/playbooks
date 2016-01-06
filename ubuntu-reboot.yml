@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+# When in doubt...
+---	
+- name: reboot Ubuntu Servers
+  hosts: kubecluster
+  sudo: true
+  tasks: 
+    - name: reboot server
+      command: /sbin/shutdown -r now "Ansible reboot triggered"
+      async: 0
+      poll: 0
+      ignore_errors: true
+
+    - name: wait for server to restart
+      local_action: wait_for host={{ inventory_hostname }} state=started
+      sudo: false	  
+ 
