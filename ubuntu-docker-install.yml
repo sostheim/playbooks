@@ -3,12 +3,6 @@
 - name: Install Docker on Ubuntu 14.04 LTS 
   hosts: kubeall
   sudo: true
-
-#  tasks: 
-#    - name: Install docker_ubuntu role on control host (localhost)
-#      local_action: command /usr/bin/ansible-galaxy install angstwad.docker_ubuntu
-#      run_once: true
-
   roles:
     - role: angstwad.docker_ubuntu      
 
