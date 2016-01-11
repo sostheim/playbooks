@@ -1,0 +1,36 @@
+#!/usr/bin/env ansible-playbook
+---	
+- name: Setup ntp on Ubuntu Server 
+  hosts: kubecluster
+  sudo: true
+  vars:
+    ntp_driftfile: /var/lib/ntp/drift
+    ntp_server: [0.ubuntu.pool.ntp.org, 1.ubuntu.pool.ntp.org]
+    ntp_restrict:
+      - "restrict -4 default kod notrap nomodify nopeer noquery"
+      - "restrict -6 default kod notrap nomodify nopeer noquery"
+      - "restrict 127.0.0.1"
+    ntp_crypto: no
+    ntp_includefile: no
+    ntp_keys: no
+    ntp_trustedkey: no
+    ntp_requestkey: no
+    ntp_controlkey: no
+    ntp_statistics: no
+    ntp_broadcast: no 
+    ntp_broadcastclient: no         
+    ntp_multicastclient: no
+
+  tasks: 
+    - name: install ntp
+      apt: name=ntp state=installed update_cache=yes cache_valid_time=3600
+
+    - name: elaborate and install ntp.conf template
+      template: src=templates/ntp.conf.j2 dest=/etc/ntp.conf
+      notify: 
+         - restart ntp
+ 
+  handlers: 
+    - name: restart ntp
+      service: name=ntp state=restarted enabled=yes
+ 
