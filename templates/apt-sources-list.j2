@@ -1,9 +1,16 @@
 # This file is managed by Ansible, all changes will be lost
 
-# Ubuntu Security Repository
-deb http://{{apt_mirror_ip_address}}/ubuntu trusty-security main restricted universe multiverse
+# Mirrored Ubuntu Security Repository
+deb http://{{apt_mirror_ip_address}}/ubuntu trusty-security main restricted
 
-# Ubuntu Package Repositories
-deb http://{{apt_mirror_ip_address}}/ubuntu trusty main restricted universe multiverse
-deb http://{{apt_mirror_ip_address}}/ubuntu trusty-updates main restricted universe multiverse
-deb http://{{apt_mirror_ip_address}}/ubuntu trusty-backports main restricted universe multiverse
+# Mirrored Ubuntu Package Repositories
+deb http://{{apt_mirror_ip_address}}/ubuntu trusty main restricted
+deb http://{{apt_mirror_ip_address}}/ubuntu trusty-updates main restricted
+
+# Not Locally Mirrored Repositories
+deb http://us.archive.ubuntu.com/ubuntu trusty universe multiverse
+deb http://us.archive.ubuntu.com/ubuntu trusty-updates universe multiverse
+deb http://us.archive.ubuntu.com/ubuntu trusty-backports universe multiverse
+deb-src http://us.archive.ubuntu.com/ubuntu/ trusty universe multiverse
+deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates main restricted universe multiverse
+deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse

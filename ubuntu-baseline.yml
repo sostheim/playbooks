@@ -10,9 +10,19 @@
       sudo: true
       template: src=templates/apt-sources-list.j2 dest=/etc/apt/sources.list backup=yes mode=0644
 
+    # An immediate refresh is required that we know will generate errors
+    # for several indexes that aren't specified in the new sources.list
+    # This calls for installing emacs, but we know it won't as soon as it
+    # errors out.  We ignore the errors, and then immediately retry the
+    # emacs installation - which should succede.
+    - name: Refresh apt-cache w/ expected errors
+      sudo: true
+      apt: name=emacs24-nox update_cache=yes 
+      ignore_errors: true
+
     - name: Install Emacs
       sudo: true
-      apt: name=emacs24-nox update_cache=true
+      apt: name=emacs24-nox update_cache=yes cache_valid_time=3600 state=installed
 
     # Configure root's .bashrc
     # this could all be done as a single complex string in one lineinfile, but why?
