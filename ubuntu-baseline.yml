@@ -3,10 +3,16 @@
 - name: Setup a New Ubuntu Server
   hosts: kubecluster
   sudo: false
+  vars:
+     apt_mirror_ip_address: 192.168.1.132
   tasks: 
+    - name: install apt sources.list with local mirror refernce
+      sudo: true
+      template: src=templates/apt-sources-list.j2 dest=/etc/apt/sources.list backup=yes mode=0644
+
     - name: Install Emacs
       sudo: true
-      apt: name=emacs24-nox update_cache=true cache_valid_time=3600
+      apt: name=emacs24-nox update_cache=true
 
     # Configure root's .bashrc
     # this could all be done as a single complex string in one lineinfile, but why?
