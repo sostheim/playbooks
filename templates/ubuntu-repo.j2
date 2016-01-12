@@ -1,0 +1,15 @@
+server {
+    listen {{ nginx_port_number }};
+
+{% if apt_mirror_private is defined and apt_mirror_private == true %}
+    location /private {
+        autoindex on;
+        root /home/ubuntu;
+    }
+{% endif %}
+
+    location /ubuntu {
+        autoindex on;
+        root /var/spool/apt-mirror/mirror/archive.ubuntu.com;
+    }
+}

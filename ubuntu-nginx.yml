@@ -1,0 +1,43 @@
+#!/usr/bin/env ansible-playbook
+# Adapted from: https://www.nginx.com/blog/installing-nginx-nginx-plus-ansible/
+---	
+- name: Setup nginx on Ubuntu Server 
+  hosts: localhost
+  sudo: true
+  vars:
+    nginx_port_number: 80
+    nginx_sites_avail: ubuntu-repo
+    nginx_sites_avail_template: ubuntu-repo.j2
+    
+  tasks: 
+#
+# Note: This is only necessary if we want to install the latest NGINX.  We can install the 
+#       universe/multiverse version without these steps.
+#
+#    - name: install nginx apt-key
+#      apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+#
+#    - name: add nginx sources.list deb url
+#      lineinfile: dest=/etc/apt/sources.list line="deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx"  
+#
+#    - name: add nginx sources.list deb-src url
+#      lineinfile: dest=/etc/apt/sources.list line="deb-src http://nginx.org/packages/mainline/ubuntu/ trusty nginx" 
+#
+    - name: install nginx
+      apt: name=nginx state=installed update_cache=yes cache_valid_time=3600
+
+    - name: elaborate and install sites-available template (if present)
+      template: src=templates/{{ nginx_sites_avail_template }} dest=/etc/nginx/sites-available/{{ nginx_sites_avail }}
+      register: nginx_templated
+
+    - name: when template is installed remove default site (if present)
+      file: path=/etc/nginx/sites-enabled/default state=absent
+      when: nginx_templated.changed == true
+
+    - name: when template is installed create sites-enabled link
+      file: src=/etc/nginx/sites-available/{{ nginx_sites_avail }} dest=/etc/nginx/sites-enabled/{{ nginx_sites_avail }} state=link
+      when: nginx_templated.changed == true
+
+    - name: start nginx
+      service: name=nginx state=started
+ 
