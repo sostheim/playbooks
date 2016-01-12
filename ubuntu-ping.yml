@@ -1,0 +1,10 @@
+#!/usr/bin/env ansible-playbook
+# Note: must be run with --ask-pass since keys are being established.
+---	
+- name: Setup ssh on Ubuntu Server 
+  hosts: kubecluster
+  sudo: false
+  tasks: 
+    - name: ping hosts
+      ping: 
+ 
