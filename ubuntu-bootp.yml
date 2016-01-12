@@ -4,19 +4,20 @@
   hosts: localhost
   sudo: true
   vars:
-    subnet_mask: 255.255.255.0    
-    dns_server_ipaddr: 192.168.1.1
-    default_gateway_ipaddr: 192.168.1.1
-    tftp_root: /var/lib/tftpboot
-    debug_level: 4
+    bootp_subnet_mask: 255.255.255.0    
+    bootp_dns_server_ipaddr: 192.168.1.1
+    bootp_default_gateway_ipaddr: 192.168.1.1
+    bootp_tftp_root: /var/lib/tftpboot
+    bootp_log_path: /var/log/bootpd.log
+    bootp_debug_level: 4
 
   tasks: 
     # assert - tftp root directory exists before continuing.
     - name: stat tftp_root
-      stat: path={{ tftp_root }} 
-      register: stat_result
+      stat: path={{ bootp_tftp_root }} 
+      register: bootp_stat_result
 
-    - assert: { that: ( stat_result.stat.exists == true ) and ( stat_result.stat.isdir == true ) }
+    - assert: { that: ( bootp_stat_result.stat.exists == true ) and ( bootp_stat_result.stat.isdir == true ) }
 
     # with tftp boot present, continue with installing and configuring bootp
     - name: install bootp
@@ -24,20 +25,20 @@
 
     - name: elaborate and install bootptab template
       template: src=templates/bootptab.j2 dest=/etc/bootptab backup=yes mode=0644
-      register: templated
+      register: bootp_templated
       
     - name: check for running bootp server
       shell: "/bin/pidof bootpd"
-      register: result
+      register: bootp_pid_result
       ignore_errors: true
 
     - name: when bootp server is not already running, start bootp server as a root background process
-      shell: "/usr/sbin/bootpd -d {{ debug_level }} -c {{ tftp_root }} >> /var/log/bootpd.log 2>&1 &"
-      when: result.rc == 1
+      shell: "/usr/sbin/bootpd -d {{ bootp_debug_level }} -c {{ bootp_tftp_root }} >> {{ bootp_log_path }} 2>&1 &"
+      when: bootp_pid_result.rc == 1
 
     - name: when bootp server is already running, HUP to reload if new /etc/bootptab
       shell: "/bin/kill -HUP {{ result.stdout }}"
-      when: ( result.rc == 0 ) and ( templated.changed == true )
+      when: ( bootp_pid_result.rc == 0 ) and ( bootp_templated.changed == true )
 
 
 
