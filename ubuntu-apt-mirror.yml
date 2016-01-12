@@ -1,0 +1,55 @@
+#!/usr/bin/env ansible-playbook
+---	
+- name: Setup amt-mirror on local Ubuntu Server 
+  hosts: localhost
+  sudo: true
+  vars:
+    # specify where the mirror resides on disk
+    apt_mirror_base: "/var/spool/apt-mirror"
+
+    # mirror.list settings
+    apt_mirror_threads: 20
+    apt_mirror_tilde: 0
+    apt_mirror_i386: true
+    apt_mirror_amd64: true
+    apt_mirror_src: false
+    apt_mirror_security: false
+    apt_mirror_backports: false
+    apt_mirror_repos: "main restricted universe multiverse"
+
+    # apt-mirror cron settings 
+    # - if cron is true 
+    #      if special != ""
+    #         then use special string
+    #         else use min/hour/day/month/year 
+    #      fi
+    #   fi
+    apt_mirror_cron: true
+    apt_mirror_cron_special: "@midnight"
+    # Note: if you don't use speacial, then each one of the following MUST BE defined
+    apt_mirror_cron_min: 1
+    apt_mirror_cron_hour: 1
+    apt_mirror_cron_day: "*"
+    apt_mirror_cron_month: "*"
+    apt_mirror_cron_year: "*"
+
+  tasks: 
+    - name: install apt-mirror
+      apt: name=apt-mirror state=installed update_cache=yes cache_valid_time=43200
+
+    - name: elaborate and install mirror list template
+      template: src=templates/apt-mirror-list.j2 dest=/etc/apt/mirror.list backup=yes mode=0644
+
+    - name: elaborate and install cron template
+      template: src=templates/apt-mirror-cron.j2 dest=/etc/cron.d/apt-mirror backup=yes mode=0644
+      register: apt_mirror_cron_template
+      when: apt_mirror_cron == true
+
+    - name: load cron.d/apt-mirror
+      cron: cron_file=apt-mirror user=root name=apt-mirror
+      when: apt_mirror_cron_template.changed == true
+
+      
+
+
+

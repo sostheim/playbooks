@@ -1,0 +1,42 @@
+############# config ##################
+#
+# set base_path    /var/spool/apt-mirror
+#
+# set mirror_path  $base_path/mirror
+# set skel_path    $base_path/skel
+# set var_path     $base_path/var
+# set cleanscript $var_path/clean.sh
+# set defaultarch i386
+# set postmirror_script $var_path/postmirror.sh
+# set run_postmirror 0
+set nthreads {{ apt_mirror_threads }}
+set _tilde {{ apt_mirror_tilde }}
+#
+############# end config ##############
+
+{% if apt_mirror_amd64 %}
+deb-amd64 http://archive.ubuntu.com/ubuntu trusty {{ apt_mirror_repos }}
+deb-amd64 http://archive.ubuntu.com/ubuntu trusty-updates {{ apt_mirror_repos }}
+#deb-amd64 http://archive.ubuntu.com/ubuntu trusty-security {{ apt_mirror_repos }}
+#deb-amd64 http://archive.ubuntu.com/ubuntu trusty-proposed {{ apt_mirror_repos }}
+#deb-amd64 http://archive.ubuntu.com/ubuntu trusty-backports {{ apt_mirror_repos }}
+{% endif %}
+
+
+{% if apt_mirror_i386 %}
+deb http://archive.ubuntu.com/ubuntu trusty {{ apt_mirror_repos }}
+deb http://archive.ubuntu.com/ubuntu trusty-updates {{ apt_mirror_repos }}
+#deb http://archive.ubuntu.com/ubuntu trusty-security {{ apt_mirror_repos }}
+#deb http://archive.ubuntu.com/ubuntu trusty-proposed {{ apt_mirror_repos }}
+#deb http://archive.ubuntu.com/ubuntu trusty-backports {{ apt_mirror_repos }}
+{% endif %}
+
+{% if apt_mirror_src %}
+deb-src http://archive.ubuntu.com/ubuntu trusty {{ apt_mirror_repos }}
+deb-src http://archive.ubuntu.com/ubuntu trusty-updates {{ apt_mirror_repos }}
+#deb-src http://archive.ubuntu.com/ubuntu trusty-security {{ apt_mirror_repos }}
+#deb-src http://archive.ubuntu.com/ubuntu trusty-proposed {{ apt_mirror_repos }}
+#deb-src http://archive.ubuntu.com/ubuntu trusty-backports {{ apt_mirror_repos }}
+{% endif %}
+
+clean http://archive.ubuntu.com/ubuntu

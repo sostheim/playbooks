@@ -1,0 +1,18 @@
+#
+# Regular cron jobs for the apt-mirror package
+#
+# Field Description from $ man 5 crontab
+#
+#   field          allowed values
+#   -----          --------------
+#   minute         0-59
+#   hour           0-23
+#   day of month   1-31
+#   month          1-12 (or names, see below)
+#   day of week    0-7 (0 or 7 is Sun, or use names)
+#
+{% if apt_mirror_cron_special is defined %}
+{{ apt_mirror_cron_special }}	apt-mirror	/usr/bin/apt-mirror > /var/spool/apt-mirror/var/cron.log
+{% else %}
+{{ apt_mirror_cron_min }} {{ apt_mirror_cron_hour }} {{ apt_mirror_cron_day }} {{ apt_mirror_cron_month }} {{ apt_mirror_cron_year }}	apt-mirror	/usr/bin/apt-mirror > /var/spool/apt-mirror/var/cron.log
+{% endif %}
