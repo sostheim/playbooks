@@ -1,12 +1,11 @@
-kube-4 ansible_ssh_host=192.168.1.4 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa_ubuntu
-kube-5 ansible_ssh_host=192.168.1.5 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa_ubuntu
-kube-6 ansible_ssh_host=192.168.1.6 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa_ubuntu
-
-kube-101 ansible_ssh_host=192.168.1.101 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
-kube-102 ansible_ssh_host=192.168.1.102 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
-kube-103 ansible_ssh_host=192.168.1.103 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
-kube-104 ansible_ssh_host=192.168.1.104 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
-kube-105 ansible_ssh_host=192.168.1.105 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
+kube-4
+kube-5
+kube-6
+kube-101
+kube-102
+kube-103
+kube-104
+kube-105
 
 [kubemaster]
 localhost
