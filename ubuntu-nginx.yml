@@ -8,6 +8,8 @@
     nginx_port_number: 80
     nginx_sites_avail: ubuntu-repo
     nginx_sites_avail_template: ubuntu-repo.j2
+    nginx_upstart: false
+    nginx_upstart_conf: nginx.conf
     
   tasks: 
 #
@@ -37,6 +39,10 @@
     - name: when template is installed create sites-enabled link
       file: src=/etc/nginx/sites-available/{{ nginx_sites_avail }} dest=/etc/nginx/sites-enabled/{{ nginx_sites_avail }} state=link
       when: nginx_templated.changed == true
+
+    - name: when Upstart is selected install /etc/nginx.conf
+      file: src=files/{{ nginx_upstart_conf }} dest=/etc/init/{{ nginx_upstart_conf }}
+      when: nginx_upstart == true
 
     - name: start nginx
       service: name=nginx state=started
