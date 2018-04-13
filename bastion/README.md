@@ -7,9 +7,9 @@ This method never requires the private half of a key pair.  There is no need to 
 This process takes the public half of the RSA key pair only.  Be sure that you only install your public key!
 
 To execute these steps you need to:
-1. have a working Ansible environment \[[0](#Reference0)\].
-2. have to have previously configured the bastion and jump hosts to have the vpn authorized user added. If you need to create the VPN user for the first see the steps below to [Create an Authorized User](#CreateAnAuthorizedUser)
-3. have an RSA key pair, or a suitable alternative. If you need to create an RSA key first see the steps below to [Create an RSA Key](#CreateYourRSAKey)
+1. have a working Ansible environment \[[0](#reference-0)\].
+2. have to have previously configured the bastion and jump hosts to have the vpn authorized user added. If you need to create the VPN user for the first see the steps below to [Create an Authorized User](#create-an-authorized-user)
+3. have an RSA key pair, or a suitable alternative. If you need to create an RSA key first see the steps below to [Create an RSA Key](#create-your-rsa-key)
 4. have physical network access and an administrative server (admin laptop/worksation) that has existing ssh access (for Ansible) to the bastion and jump hosts
 
 
@@ -45,7 +45,7 @@ PLAY RECAP *********************************************************************
 10.1.10.192 : ok=2 changed=1 unreachable=0 failed=0
 ```
 ## Configure Your SSH Client
-Back on your system, add/append the following entries to your ssh configuration file \[[1](#Reference1)\]\[[2](#Reference2)\].  You need to replace the value for the `IdentityFile` value with a path that reflects the private key half of the public key you sourced in the previous step.  The User name, here `ftl`, is required match the name of the authorized user on the bastion and jump hosts.
+Back on your system, add/append the following entries to your ssh configuration file \[[1](#reference-1)\]\[[2](#reference-2)\].  You need to replace the value for the `IdentityFile` value with a path that reflects the private key half of the public key you sourced in the previous step.  The User name, here `ftl`, is required match the name of the authorized user on the bastion and jump hosts.
 
 ```
 # Use this host for External Internet -> Bastion
@@ -116,7 +116,7 @@ sostheim@labnode-9:~$
 The bastion and jump hosts use a non-privileged user account to enable access.  The account used is the default from the playbook: `ftl`.  Regardless of the name you choose, this account has no special access, especially not sudo access.  It is a member to as few groups as possible, and has no privileges.
 
 To execute this steps you need to:
-1. Have a working Ansible environment \[[0](#Reference0)\].
+1. Have a working Ansible environment \[[0](#reference-0)\].
 
 ```
 # This step only needs to be executed once to setup a new bastion host, jump box, or both.
