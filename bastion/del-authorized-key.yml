@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+
+  # see http://docs.ansible.com/ansible/authorized_key_module.html
+  - name: delete the public rsa key from the ftl user's authorized_keys file
+    authorized_key:
+      user: ftl
+      state: absent
+      key: "{{ lookup('file', './delete_id_rsa.pub') }}"

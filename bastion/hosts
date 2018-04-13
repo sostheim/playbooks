@@ -1,0 +1,7 @@
+[bastion]
+# insert bastion hostname here
+
+[jumpbox]
+# insert jump host(s) here
+
+

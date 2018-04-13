@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    user_id: ftl
+  tasks:
+
+  # check/ensure group exists first
+  - name: ensure users group exist on remote server
+    group: name=users
+
+  # see http://docs.ansible.com/ansible/user_module.html
+  - name: add the user_id to the remote server
+    user:
+      name: {{ user_id }}
+      shell: /bin/bash
+      group: users
