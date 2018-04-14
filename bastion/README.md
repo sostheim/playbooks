@@ -1,5 +1,7 @@
 # Overview
-This is a simple method for administering a users's access to a jump host behind a bastion in an AWS VPC.  The bastion host exists in a public subnet with an EIP/IGW access enabled.  Some number of jump hosts, 1 or more, exist in a private subnet and enable access to a VGW.  
+This is a simple method for administering a users's access to a jump host behind a bastion in an AWS VPC.  The bastion host exists in a public subnet with an EIP/IGW access enabled.  Some number of jump hosts, 1 or more, exist in a private subnet and enable access to a VGW.  The basic layout is something along the lines of the following simplified diagram.
+
+![Bastion Diagram](./img/bastion_jump.png)
 
 This method never requires the private half of a key pair.  There is no need to expose it to being transferred to an administrator or risk having it compromised on an exploited server.
 
