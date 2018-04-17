@@ -187,6 +187,6 @@ rastop:keys sostheim$ cat ~/.ssh/id_rsa_vpn.pub ssh-rsa AAAAB3NzaC1yc2EAAAADAQAB
 ### Reference 0
 Setting up Ansible for your environment is outside of the scope of this document.  For assistance refer to the [Ansible Installation Guide](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 ### Reference 1 
-ssh_config(5) - Linux man page
+[ssh_config(5) - Linux man page](http://man7.org/linux/man-pages/man5/ssh_config.5.html)
 ### Reference 2 
 https://www.ssh.com/ssh/config/ 
